@@ -1,0 +1,37 @@
+
+xmonad.hs:20:14: warning: [-Wtabs]
+    Tab character found here, and in 156 further locations.
+    Please use spaces instead.
+   |
+20 | myWorkspaces    :: [String]
+   |              ^^^
+
+xmonad.hs:73:11: warning: [-Wdeprecations]
+    In the use of ‘defaultPP’ (imported from XMonad.Hooks.DynamicLog):
+    Deprecated: "Use def (from Data.Default, and re-exported by XMonad.Hooks.DynamicLog) instead."
+   |
+73 | tryPP h = defaultPP
+   |           ^^^^^^^^^
+
+xmonad.hs:108:65: warning: [-Wdeprecations]
+    In the use of ‘spacing’ (imported from XMonad.Layout.Spacing):
+    Deprecated: "Use spacingRaw instead."
+    |
+108 | layout = (gaps [(U, 42), (R, 8), (L, 8), (D, 8)] $ avoidStruts (spacing 2 $ res)) ||| Circle ||| ful 
+    |                                                                 ^^^^^^^
+
+xmonad.hs:115:25: warning: [-Wdeprecations]
+    In the use of ‘defaultConfig’
+    (imported from XMonad, but defined in XMonad.Config):
+    Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
+    |
+115 |         xmonad $ ewmh $ defaultConfig
+    |                         ^^^^^^^^^^^^^
+
+xmonad.hs:116:59: warning: [-Wdeprecations]
+    In the use of ‘defaultConfig’
+    (imported from XMonad, but defined in XMonad.Config):
+    Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
+    |
+116 |                 { manageHook = manageDocks <+> manageHook defaultConfig
+    |                                                           ^^^^^^^^^^^^^

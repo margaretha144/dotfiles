@@ -1,0 +1,118 @@
+import XMonad
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
+
+import XMonad.Util.SpawnOnce
+import XMonad.Util.Run(spawnPipe)
+import XMonad.Util.EZConfig(additionalKeys)
+
+import Data.List
+import qualified XMonad.StackSet as W
+
+import XMonad.Layout.Spacing
+import XMonad.Layout.ResizableTile
+import XMonad.Layout.WindowArranger
+import XMonad.Layout.NoBorders
+import XMonad.Layout.Fullscreen
+import XMonad.Layout.Circle
+import XMonad.Layout.Gaps
+
+import XMonad.Actions.CycleWS (prevWS, nextWS)
+import System.IO
+
+blu1 = "#528588"
+red1 = "#BA5E57"
+fore = "#DEE3E0"
+back = "#343C48"
+
+layout = (gaps [(U, 42), (R, 8), (L, 8), (D, 8)] $ avoidStruts (spacing 2 $ res)) ||| Circle ||| ful
+
+res = ResizableTall 1 (2/100) (1/2) []
+ful = noBorders (fullscreenFull Full)
+
+myWorkspaces :: [String]
+myWorkspaces = click $ [ " 1 ", " 2 ", " 3 "]
+		where click l = [ "^ca(1, xdotool key super+"
+				++ show (n) ++ ")" ++ ws ++ "^ca()" |
+				(i,ws) <- zip [1..] l, let n = i]
+
+startUp :: X()
+startUp = do
+		spawnOnce "xrdb -merge $HOME/.Xresources"
+		spawnOnce "feh --bg-fill $HOME/Media/Pictures/okita-souji_FHD.jpg"
+		spawnOnce "picom -b --config $HOME/.config/picom/config.conf"
+		spawnOnce "urxvtd -q -o -f"
+
+myManageHook = composeAll
+	[ className =? "firefox" --> doFloat
+	, className =? "blender" --> doFloat
+	]
+
+logbar h = do
+	dynamicLogWithPP $ tryPP h
+
+tryPP :: Handle -> PP
+tryPP h = defaultPP
+		{ ppOutput			= hPutStrLn h
+		, ppCurrent			= dzenColor (fore) (blu1) . pad
+		, ppVisible			= dzenColor (fore) (back) . pad
+		, ppHidden			= dzenColor (fore) (back) . pad
+		, ppHiddenNoWindows	= dzenColor (fore) (back) . pad
+		, ppUrgent			= dzenColor (fore) (back) . pad
+		, ppOrder			= \(ws:l:t) -> [ws, l]
+		, ppSep				= ""
+		, ppLayout			= dzenColor (fore) (red1) .
+							( \t -> case t of
+									"Spacing 2 ResizableTall" -> " " ++ i ++ "arch.xbm) TALL "
+									"Full" -> " " ++ i ++ "note.xbm) FULL"
+									"Circle" -> " " ++ i ++ "mem.xbm) CIRC "
+									_ -> " " ++ i ++ "usb.xbm) TALL "
+							)
+		} where i = "^i($HOME/.local/share/icons/"
+
+myKeyBandings = [ ((modm, xK_d), spawn "dmenu_run")
+				, ((modm, xK_w), spawn "urxvt")
+				, ((modm, xK_c), kill)
+				, ((modm, xK_Left), prevWS)
+				, ((modm, xK_Right), nextWS)
+				, ((modm .|. controlMask			  	, xK_s		), sendMessage Arrange			  ) 
+				, ((modm .|. controlMask .|. shiftMask	, xK_s		), sendMessage DeArrange		  )
+				, ((modm .|. controlMask			 	, xK_Right	), sendMessage (MoveLeft		10))
+				, ((modm .|. controlMask				, xK_Left	), sendMessage (MoveRight		10))
+				, ((modm .|. controlMask				, xK_Down	), sendMessage (MoveDown		10))
+				, ((modm .|. controlMask				, xK_Up		), sendMessage (MoveUp			10))
+				, ((modm .|.				 shiftMask	,	xK_Left	), sendMessage (IncreaseLeft	10)) 
+				, ((modm .|.				 shiftMask	, xK_Right	), sendMessage (IncreaseRight	10))
+				, ((modm .|.				 shiftMask	, xK_Down	), sendMessage (IncreaseDown	10))
+				, ((modm .|.				 shiftMask	, xK_Up		), sendMessage (IncreaseUp		10))
+				, ((modm .|. controlMask .|. shiftMask	, xK_Left	), sendMessage (DecreaseLeft	10))
+				, ((modm .|. controlMask .|. shiftMask	, xK_Right	), sendMessage (DecreaseRight	10))
+				, ((modm .|. controlMask .|. shiftMask	, xK_Down	), sendMessage (DecreaseDown	10))
+				, ((modm .|. controlMask .|. shiftMask	, xK_Up		), sendMessage (DecreaseUp		10))
+				, ((modm, xK_KP_Add), sequence_	[ sendMessage (IncreaseLeft		10)
+												, sendMessage (IncreaseRight	10)
+												, sendMessage (IncreaseUp		10)
+												, sendMessage (IncreaseDown		10)
+												])
+				, ((modm, xK_KP_Subtract), sequence_	[ sendMessage (DecreaseLeft		10)
+														, sendMessage (DecreaseRight	10)
+														, sendMessage (DecreaseUp		10)
+														, sendMessage (DecreaseDown		10)
+														])
+				] where modm = mod1Mask
+
+main = do
+	bar <- spawnPipe panel
+	xmonad $ defaultConfig
+		{ manageHook = manageDocks <+> manageHook defaultConfig
+		, layoutHook = windowArrange layout
+		, startupHook = startUp
+		, workspaces = myWorkspaces
+		, modMask = mod1Mask
+		, terminal = "urxvt"
+		, borderWidth = 3
+		, focusedBorderColor = "#6A555C"
+		, normalBorderColor = "#404752"
+		, logHook = logbar bar
+		} `additionalKeys` myKeyBandings
+		where panel = "dzen2 -ta l -p -w 400 -y 10 -x 10 -h 24 -e ''"
