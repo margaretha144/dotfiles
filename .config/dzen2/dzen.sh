@@ -47,7 +47,7 @@ get_network_speed() {
 	receiveKB=$(expr $receiveByte / 1024)
 	transKB=$(expr $transByte / 1024)
 
-	echo "$netUp_icon Up: $receiveKB kB/s    $netDown_icon Down: $transKB kB/s"
+	echo "$netUp_icon Up: $transKB kB/s    $netDown_icon Down: $receiveKB kB/s"
 }
 
 get_weather() {
