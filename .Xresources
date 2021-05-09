@@ -1,4 +1,4 @@
-URxvt.font: xft: Iosevka Nerd Font Mono:size=10, xft: mplus Nerd Font Mono:size=10
+URxvt.font: xft: M+ 1mn:style=bold:size=11, xft: Iosevka Nerd Font Mono:size=11
 URxvt.letterSpace: 0
 URxvt.internalBorder: 24
 ! URxvt.geometry: 60x24
@@ -44,7 +44,7 @@ URxvt.keysym.Control-Shift-Prior: tabbedex:move_tab_left
 
 ! XFT CONFIGURE
 Xft.antialias:	1
-Xft.dpi:	75
+Xft.dpi:	72
 Xft.hinting:	1
 Xft.hintstyle:	hintlight
 Xft.lcdfilter:	lcddefault
@@ -72,38 +72,38 @@ Xft.rgba:	rgb
 #define white1                    #F7F7F7
 #define white2                    #F4F4F4
 
-*.color1:                         red0
-*.color2:                         green0
-*.color3:                         yellow0
-*.color4:                         blue0
-*.color5:                         magenta0
-*.color6:                         cyan0
-
-*.color9:                         red1
-*.color10:                        green1
-*.color11:                        yellow1
-*.color12:                        blue1
-*.color13:                        magenta1
-*.color14:                        cyan1
+*.color1:                         #FB6396
+*.color2:                         #94CF95
+*.color3:                         #F692B2
+*.color4:                         #6EC1D6
+*.color5:                         #CD84C8
+*.color6:                         #7FE4D2
+*.color9:                         #F92D72
+*.color10:                        #6CCB6E
+*.color11:                        #F26190
+*.color12:                        #4CB9D6
+*.color13:                        #C269BC
+*.color14:                        #58D6BF
 
 ! FOR REVERSING ONLY (INVERT BG/FG)
-*.foreground:                     white0
-*.background:                     black0
-URxvt.background:				  [95]black0
-*.cursorColor:                    white0
+!*.foreground:                     #FFFFFF
+!*.background:                     #1A2026
+!URxvt.background:				  [95]#1d1729
+!*.cursorColor:                    #FFFFFF
 
-*.color0:                         black2
-*.color7:                         white1
+!*.color0:                         #242D35
+!*.color7:                         #FFFFFF
 
-*.color8:                         black3
-*.color15:                        white2
+!*.color8:                         #526170
+!*.color15:                        #F4F5F2
 
-!*.foreground:                     black0
-!*.background:                     white0
-!*.cursorColor:                    black0
+*.foreground:                     black0
+*.background:                     white0
+URxvt.background:				  [95]white0
+*.cursorColor:                    black0
 
-!*.color0:                         white1
-!*.color7:                         black2
+*.color0:                         white1
+*.color7:                         black2
 
-!*.color8:                         white2
-!*.color15:                        black3
+*.color8:                         white2
+*.color15:                        black3
